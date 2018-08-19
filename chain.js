@@ -17,10 +17,9 @@ class Blockchain {
   }
 
   start(callback) {
-    let self = this;
     this.chain.sync(async (lastKey) => {
       if (lastKey == 0) {
-        await self.addBlock(new Block("The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"));
+        await this.addBlock(new Block("The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"));
       }
 
       callback(this);
@@ -59,7 +58,6 @@ class Blockchain {
 
       return JSON.parse(block);
     } catch(e) {
-      console.log("[ERROR] Cannot retrieve block at height", blockHeight);
       return null;
     }
   }

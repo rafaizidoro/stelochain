@@ -7,15 +7,16 @@ let blockchain = new chain.Blockchain();
 // This allows the blockchain to be synced before doing any change.
 blockchain.start(async (bc) => {
   // Create a set of blocks
-  // for (var quote of quotes) {
-    // await bc.addBlock(new chain.Block("EOS"));
-  // }
+  for (var quote of quotes) {
+    await bc.addBlock(new chain.Block(quote));
+  }
 
-  // Chain should be valid in the first run.
+  // Chain should be valid on the first run.
   let invalidBlocks = await bc.validateChain();
   console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
 
   // Tamper genesis block
+  // PS: If you already tampered on another run, you MUST `rm -rf ./chaindata`
   genesisBlock = await bc.getBlock(1);
   tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
   await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
@@ -23,4 +24,5 @@ blockchain.start(async (bc) => {
   // Chain should be invalid
   invalidBlocks = await bc.validateChain();
   console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
+  console.log("Invalid blocks:", invalidBlocks.map( block => block.height ));
 });

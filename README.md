@@ -17,6 +17,8 @@ If you want to reset the test, you must remove the chaindata LevelDB directory:
  rm -rf ./chaindata
 ```
 
+**This code was developed with NodeJS v.8.9.4.**
+
 ## File structure
 
 The following files are used on the execise:
