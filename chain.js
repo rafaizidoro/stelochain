@@ -41,7 +41,11 @@ class Blockchain {
 
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
 
-    await this.chain.put(blockHeight, JSON.stringify(newBlock));
+    let blockString = JSON.stringify(newBlock);
+
+    await this.chain.put(blockHeight, blockString);
+
+    console.log("[INFO] New Block: ", blockString);
     return newBlock;
   }
 
@@ -55,6 +59,7 @@ class Blockchain {
 
       return JSON.parse(block);
     } catch(e) {
+      console.log("[ERROR] Cannot retrieve block at height", blockHeight);
       return null;
     }
   }
@@ -65,7 +70,7 @@ class Blockchain {
 
     let nextBlock = await this.getBlock(blockHeight+1);
 
-    if (nextBlock !== null && nextBlock.previousHash !== block.hash) {
+    if (nextBlock !== null && nextBlock.previousBlockHash !== block.hash) {
       valid = false;
     }
 
@@ -74,31 +79,25 @@ class Blockchain {
 
     let validBlockHash = SHA256(JSON.stringify(block)).toString();
 
-    if (blockHash === validBlockHash) {
+    if (blockHash !== validBlockHash) {
       valid = false;
     }
 
-    return { height: blockHeight, valid: valid }
+    return { height: blockHeight, valid: valid };
   }
 
-  validateChain() {
-    let errorLog = [];
-    for (var i = 0; i < this.chain.length - 1; i++) {
-      // validate block
-      if (!this.validateBlock(i)) errorLog.push(i);
-      // compare blocks hash link
-      let blockHash = this.chain[i].hash;
-      let previousHash = this.chain[i + 1].previousBlockHash;
-      if (blockHash !== previousHash) {
-        errorLog.push(i);
+  async validateChain() {
+    let invalidBlocks = [];
+
+    for (var i = 1; i <= this.chain.lastKey; i++) {
+      let block = await this.validateBlock(i);
+
+      if (!block.valid) {
+        invalidBlocks.push(block);
       }
     }
-    if (errorLog.length > 0) {
-      console.log('Block errors = ' + errorLog.length);
-      console.log('Blocks: ' + errorLog);
-    } else {
-      console.log('No errors detected');
-    }
+
+    return invalidBlocks;
   }
 }
 

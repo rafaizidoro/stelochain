@@ -8,23 +8,19 @@ let blockchain = new chain.Blockchain();
 blockchain.start(async (bc) => {
   // Create a set of blocks
   // for (var quote of quotes) {
-    await bc.addBlock(new chain.Block(quotes[0]));
+    // await bc.addBlock(new chain.Block("EOS"));
   // }
 
   // Chain should be valid in the first run.
-  // let invalidBlocks = await bc.validateChain();
-
-  // console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
+  let invalidBlocks = await bc.validateChain();
+  console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
 
   // Tamper genesis block
-  // genesisBlock = await bc.getBlock(1);
-
-  // tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
-
-  // await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
+  genesisBlock = await bc.getBlock(1);
+  tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
+  await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
 
   // Chain should be invalid
-  // invalidBlocks = await bc.validateChain();
-
-  // console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
+  invalidBlocks = await bc.validateChain();
+  console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
 });
