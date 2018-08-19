@@ -7,24 +7,24 @@ let blockchain = new chain.Blockchain();
 // This allows the blockchain to be synced before doing any change.
 blockchain.start(async (bc) => {
   // Create a set of blocks
-  for (var quote of quotes) {
+  // for (var quote of quotes) {
     await bc.addBlock(new chain.Block(quotes[0]));
-  }
+  // }
 
   // Chain should be valid in the first run.
-  let invalidBlocks = await bc.validateChain();
+  // let invalidBlocks = await bc.validateChain();
 
-  console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
+  // console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
 
   // Tamper genesis block
-  genesisBlock = await bc.getBlock(1);
+  // genesisBlock = await bc.getBlock(1);
 
-  tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
+  // tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
 
-  await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
+  // await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
 
   // Chain should be invalid
-  invalidBlocks = await bc.validateChain();
+  // invalidBlocks = await bc.validateChain();
 
-  console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
+  // console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
 });
