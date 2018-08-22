@@ -66,7 +66,6 @@ class Storer {
   _onLevelClose(callback) {
     this.locked = false;
     callback(this.lastKey);
-    console.log(" ======== SYNC COMPLETED ====== ".rainbow);
   }
 }
 

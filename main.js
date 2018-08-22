@@ -11,16 +11,16 @@ for (var quote of quotes) {
 }
 
 Promise.all(blocks).then(async (blocks) => {
+  console.log(`[INFO] Blockchain Height: ${blockchain.getBlockHeight()}`.blue);
+
   // Chain should be valid on the first run.
   let invalidBlocks = await blockchain.validateChain();
 
   if (invalidBlocks.length > 0) {
-    console.log("[ERROR] The chain is already tampered. Run `rm -rf ./chaindata` and execute this script again".red);
+    console.log("[ERROR] The chain is already tampered. Run `rm -rf ./chaindata` and execute this script again!".red);
   } else {
     console.log(`[INFO] Chain before tampering. Valid? ${invalidBlocks.length === 0}`.green);
 
-    // Log block height
-    console.log(`[INFO] Blockchain Height: ${blockchain.getBlockHeight()}`.blue);
 
     // Tamper genesis block
     // PS: If you already tampered on another run, you MUST `rm -rf ./chaindata`
@@ -33,7 +33,7 @@ Promise.all(blocks).then(async (blocks) => {
     // Chain should be invalid
     invalidBlocks = await blockchain.validateChain();
     console.log(`[WARNING] Chain after tampering. Valid?  ${invalidBlocks.length === 0}`.yellow);
-    console.log(`[WARNING] Invalid blocks: ${invalidBlocks.map( block => block.height)}`.yellow);
+    console.log(`[WARNING] Invalid block height: ${invalidBlocks.map( block => block.height)}`.yellow);
   }
 });
 
