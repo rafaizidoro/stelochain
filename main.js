@@ -21,7 +21,6 @@ Promise.all(blocks).then(async (blocks) => {
   } else {
     console.log(`[INFO] Chain before tampering. Valid? ${invalidBlocks.length === 0}`.green);
 
-
     // Tamper genesis block
     // PS: If you already tampered on another run, you MUST `rm -rf ./chaindata`
     genesisBlock = await blockchain.getBlock(0);
@@ -36,5 +35,3 @@ Promise.all(blocks).then(async (blocks) => {
     console.log(`[WARNING] Invalid block height: ${invalidBlocks.map( block => block.height)}`.yellow);
   }
 });
-
-
