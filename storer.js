@@ -1,4 +1,5 @@
 const level = require('level');
+const colors = require('colors');
 
 class Storer {
   constructor(path) {
@@ -9,14 +10,14 @@ class Storer {
     this.canStart = true;
   }
 
-  async sync(callback) {
+  sync(callback) {
     if (typeof (callback) != 'function') {
-      console.log('[ERROR] onReady arguments must be a callback function');
+      console.log('[ERROR] sync arguments must be a callback function'.yellow);
       return false;
     }
 
-    if (this.canStart === false) {
-      console.log('[ERROR] Read stream already started')
+    if (! this.canStart) {
+      console.log('[ERROR] Read stream already started'.yellow)
       return false
     }
 
@@ -50,7 +51,7 @@ class Storer {
   _onLevelData(data) {
     if (data.value !== "") {
       try {
-        console.log("[INFO]", "Fetching key #", data.key, " - ", data.value);
+        console.log(`[INFO] Fetching key # ${data.key} - ${data.value}`.gray);
         this.lastKey++;
       } catch (e) {
         console.log("[ERROR]", "Invalid json data on key #", data.key)
@@ -65,8 +66,8 @@ class Storer {
   _onLevelClose(callback) {
     this.locked = false;
     callback(this.lastKey);
-    console.log("[INFO]", "SYNC COMPLETE");
+    console.log(" ======== SYNC COMPLETED ====== ".rainbow);
   }
 }
 
-module.exports = new Storer('./chaindata');
+module.exports = Storer;

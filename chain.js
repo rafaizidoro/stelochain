@@ -1,40 +1,51 @@
 const SHA256 = require('crypto-js/sha256');
 const Storer = require('./storer');
+const Block = require('./block');
 
-class Block {
-  constructor(data) {
-    this.hash = "",
-      this.height = 0,
-      this.body = data,
-      this.time = 0,
-      this.previousBlockHash = ""
-  }
-}
-
-class Blockchain {
+class Chain {
   constructor() {
-    this.chain = Storer;
-  }
+    this.mempool = []; // array to hold blocks before sync is complete
 
-  start(callback) {
+    this.chain = new Storer('./chaindata');
+    this.chainLocked = this.chain.locked;
+
     this.chain.sync(async (lastKey) => {
+      this.chainLocked = false;
+
       if (lastKey == 0) {
         await this.addBlock(new Block("The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"));
       }
 
-      callback(this);
+      for (var block of this.mempool) {
+        await this.addBlock(block);
+      }
     });
   }
 
   async addBlock(newBlock) {
-    let blockHeight =  this.chain.lastKey+1;
+    // While chain is locked, we store blocks into mempool.
+    // It will remain there until sync is complete.
+    if (this.chainLocked) {
+      this.mempool.push(newBlock);
+
+      return new Promise( (resolve, reject) => {
+        const interval = setInterval(() => {
+          if (! this.chainLocked) {
+            clearInterval(interval);
+            resolve(true);
+          }
+        }, 100);
+      });
+    }
+
+    let blockHeight =  this.chain.lastKey;
 
     newBlock.height = blockHeight;
     newBlock.time = new Date().getTime().toString().slice(0, -3);
 
     // previous block hash
     if (this.chain.lastKey > 0) {
-      let lastBlock = await this.getBlock(this.chain.lastKey);
+      let lastBlock = await this.getBlock(this.chain.lastKey-1);
       newBlock.previousBlockHash = lastBlock.hash
     }
 
@@ -42,14 +53,17 @@ class Blockchain {
 
     let blockString = JSON.stringify(newBlock);
 
+    console.log(`[INFO] New Block: ${blockString}`.cyan);
+
     await this.chain.put(blockHeight, blockString);
 
-    console.log("[INFO] New Block: ", blockString);
     return newBlock;
   }
 
   getBlockHeight() {
-    return this.chain.lastKey;
+    let height = this.chain.lastKey;
+
+    return height;
   }
 
   async getBlock(blockHeight) {
@@ -87,7 +101,7 @@ class Blockchain {
   async validateChain() {
     let invalidBlocks = [];
 
-    for (var i = 1; i <= this.chain.lastKey; i++) {
+    for (var i = 0; i <= this.chain.lastKey-1; i++) {
       let block = await this.validateBlock(i);
 
       if (!block.valid) {
@@ -99,5 +113,4 @@ class Blockchain {
   }
 }
 
-module.exports.Block = Block
-module.exports.Blockchain = Blockchain
+module.exports = Chain;

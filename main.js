@@ -1,28 +1,40 @@
-let chain = require('./chain');
+let Chain = require('./chain');
+let Block = require('./block');
 let quotes = require('./quotes');
 
-let blockchain = new chain.Blockchain();
+let blockchain = new Chain();
+let blocks = [];
 
-// We must only execute commands on the start callback
-// This allows the blockchain to be synced before doing any change.
-blockchain.start(async (bc) => {
-  // Create a set of blocks
-  for (var quote of quotes) {
-    await bc.addBlock(new chain.Block(quote));
-  }
+// Create a set of blocks
+for (var quote of quotes) {
+  blocks.push(blockchain.addBlock(new Block(quote)));
+}
 
+Promise.all(blocks).then(async (blocks) => {
   // Chain should be valid on the first run.
-  let invalidBlocks = await bc.validateChain();
-  console.log("Chain before tampering. Valid?", invalidBlocks.length === 0);
+  let invalidBlocks = await blockchain.validateChain();
 
-  // Tamper genesis block
-  // PS: If you already tampered on another run, you MUST `rm -rf ./chaindata`
-  genesisBlock = await bc.getBlock(1);
-  tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
-  await bc.chain.db.put(1, JSON.stringify(tamperedBlock));
+  if (invalidBlocks.length > 0) {
+    console.log("[ERROR] The chain is already tampered. Run `rm -rf ./chaindata` and execute this script again".red);
+  } else {
+    console.log(`[INFO] Chain before tampering. Valid? ${invalidBlocks.length === 0}`.green);
 
-  // Chain should be invalid
-  invalidBlocks = await bc.validateChain();
-  console.log("Chain after tampering. Valid?", invalidBlocks.length === 0);
-  console.log("Invalid blocks:", invalidBlocks.map( block => block.height ));
+    // Log block height
+    console.log(`[INFO] Blockchain Height: ${blockchain.getBlockHeight()}`.blue);
+
+    // Tamper genesis block
+    // PS: If you already tampered on another run, you MUST `rm -rf ./chaindata`
+    genesisBlock = await blockchain.getBlock(0);
+    tamperedBlock = Object.assign(genesisBlock, { body: "Tampered" });
+
+    // Insert the tampered block on database
+    await blockchain.chain.db.put(0, JSON.stringify(tamperedBlock));
+
+    // Chain should be invalid
+    invalidBlocks = await blockchain.validateChain();
+    console.log(`[WARNING] Chain after tampering. Valid?  ${invalidBlocks.length === 0}`.yellow);
+    console.log(`[WARNING] Invalid blocks: ${invalidBlocks.map( block => block.height)}`.yellow);
+  }
 });
+
+
