@@ -19,15 +19,19 @@ If you want to reset the test, you must remove the chaindata LevelDB directory:
 
 **This code was developed with NodeJS v.8.9.4.**
 
-## File structure
+# File structure
 
-The following files are used on the execise:
+## chain.js
+This files includes the main Chain class. It is responsible to set the Blockchain, sync database and do all the validations.
 
-# chain.js
-This files includes the main Blockchain and Block classes. It is responsible to set those classes and do all the validations.
+## block.js
+This files includes the Block class.
 
-# quotes.js
+## quotes.js
 This files includes an array of Satoshi Nakamoto quotes. We use it to generate sample block data.
 
-# storer.js
+## storer.js
 All the interface with LevelDB is done on the Storer class.
+
+## main.js
+The main entry point.
