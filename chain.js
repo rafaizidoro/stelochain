@@ -61,7 +61,7 @@ class Chain {
   }
 
   getBlockHeight() {
-    let height = this.chain.lastKey;
+    let height = this.chain.lastKey - 1;
 
     return height;
   }
