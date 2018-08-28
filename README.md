@@ -1,37 +1,50 @@
-## Running the code
-
-A main.js file is included, which has an inital set of testing data.
-The file is self explanatory, with appropriates comments on place.
-
-To run the file, execute the following command:
-
+## Starting the API Server
+To start the API server, you will need to run the following command:
 ```
-  node main.js
+ node app.js
 ```
 
-The main.js file tampers the chain, so it will only be valid on the first run.
+This will open the server on port 8000 and will synchronize the blockchain.
 
-If you want to reset the test, you must remove the chaindata LevelDB directory:
+The following endpoint are available:
+
+### POST /block
+This endpoint allows the client to create a block.
+
+### GET /block/0
+This endpoint allows the client to request a block.
+
+## Running tests
+The test were created using the Jest framework. To run the tests just execute:
 
 ```
- rm -rf ./chaindata
+ npm tests
 ```
 
 **This code was developed with NodeJS v.8.9.4.**
 
 # File structure
 
-## chain.js
-This files includes the main Chain class. It is responsible to set the Blockchain, sync database and do all the validations.
+## lib/chain.js
+This file includes the main Chain class. It is responsible to set the Blockchain, sync database and do all the validations.
 
-## block.js
-This files includes the Block class.
+## lib/block.js
+This file includes the Block class.
 
-## quotes.js
-This files includes an array of Satoshi Nakamoto quotes. We use it to generate sample block data.
-
-## storer.js
+## lib/storer.js
 All the interface with LevelDB is done on the Storer class.
 
-## main.js
-The main entry point.
+## test/fixtures/quotes.js
+This file includes an array of Satoshi Nakamoto quotes. We use it to generate sample block data.
+
+## handlers/block.js
+Configure the main block routes
+
+## server.js
+Configures the API entry point
+
+## app.js
+Starts the API server
+
+## tamper.js
+It's tampers the data so we can test the chain validation.
