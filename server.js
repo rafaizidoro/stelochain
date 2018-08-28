@@ -1,8 +1,7 @@
 const Hapi = require('hapi');
-const Chain = require('./lib/chain');
-const Block = require('./lib/block');
 
-const handler = require('./handlers/block');
+const Handler = require('./handlers/block');
+handler = new Handler();
 
 const server = Hapi.server({
     port: 8000,
@@ -12,13 +11,13 @@ const server = Hapi.server({
 server.route({
     method: 'GET',
     path: '/block/{heightParam}',
-    handler: handler.getBlock
+    handler: handler.getBlock.bind(handler)
 });
 
 server.route({
     method: 'POST',
     path: '/block',
-    handler: handler.postBlock
+    handler: handler.postBlock.bind(handler)
 });
 
 

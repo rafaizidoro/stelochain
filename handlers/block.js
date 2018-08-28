@@ -1,9 +1,11 @@
 let Chain = require('../lib/chain');
 let Block = require('../lib/block');
 
-let chain = new Chain();
-
 class Handler {
+  constructor(chain=null) {
+    this.chain = new Chain();
+  }
+
   async getBlock(req, res) {
     let height = parseInt(req.params.heightParam);
     console.log(`[GET] /block/${height}`);
@@ -12,7 +14,7 @@ class Handler {
       return res.response({ error: `block height must be present and be a positive number` }).code(404);
     }
 
-    let block = await chain.getBlock(height);
+    let block = await this.chain.getBlock(height);
 
     if (block === null) {
       return res.response({ error: `cannot find block ${height}` }).code(404);
@@ -28,10 +30,10 @@ class Handler {
       return res.response({ error: 'the field "body" must be present' }).code(400);
     }
 
-    let block = await chain.addBlock(new Block(req.payload.body));
+    let block = await this.chain.addBlock(new Block(req.payload.body));
 
     return block;
   }
 }
 
-module.exports = new Handler();
+module.exports = Handler;
