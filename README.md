@@ -1,5 +1,5 @@
 ## Installation
-After clone this project, you will need to install the npm modules:
+After cloning this project, you will need to install the npm modules:
 
 ```
     npm install
