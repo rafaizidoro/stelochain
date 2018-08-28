@@ -1,3 +1,10 @@
+## Installation
+After clone this project, you will need to install the npm modules:
+
+```
+    npm install
+```
+
 ## Starting the API Server
 To start the API server, you will need to run the following command:
 ```
