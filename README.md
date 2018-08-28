@@ -42,8 +42,7 @@ The test were created using the Jest framework. To run the tests just execute:
 ```
  npm tests
 ```
-
-**This code was developed with NodeJS v.8.9.4.**
+** The tests will works only on *nix based systems **
 
 # File structure
 
