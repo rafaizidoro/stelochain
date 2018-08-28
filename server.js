@@ -1,24 +1,36 @@
 const Hapi = require('hapi');
-
 const Handler = require('./handlers/block');
-handler = new Handler();
 
-const server = Hapi.server({
-    port: 8000,
-    host: 'localhost'
-});
+class Server {
+  constructor(handler = null) {
+    this.handler = handler || new Handler();
+    this.hapi = Hapi.server({
+      port: 8000,
+      host: 'localhost'
+    });
 
-server.route({
-    method: 'GET',
-    path: '/block/{heightParam}',
-    handler: handler.getBlock.bind(handler)
-});
+    this.setupRoutes();
+  }
 
-server.route({
-    method: 'POST',
-    path: '/block',
-    handler: handler.postBlock.bind(handler)
-});
+  setupRoutes() {
+    this.hapi.route({
+      method: 'GET',
+      path: '/block/{heightParam}',
+      handler: this.handler.getBlock.bind(this.handler)
+    });
 
+    this.hapi.route({
+      method: 'POST',
+      path: '/block',
+      handler: this.handler.postBlock.bind(this.handler)
+    });
+  }
 
-module.exports = server;
+  start() {
+    this.hapi.start();
+
+    console.log(`Server running at ${this.hapi.info.uri}`);
+  }
+}
+
+module.exports = Server;

@@ -2,8 +2,8 @@ let Chain = require('../lib/chain');
 let Block = require('../lib/block');
 
 class Handler {
-  constructor(chain=null) {
-    this.chain = new Chain();
+  constructor(path=null) {
+    this.chain = path ? new Chain(path) : new Chain();
   }
 
   async getBlock(req, res) {

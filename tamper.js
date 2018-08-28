@@ -1,6 +1,6 @@
 let Chain = require('./lib/chain');
 let Block = require('./lib/block');
-let quotes = require('./quotes');
+let quotes = require('./test/fixtures/quotes');
 
 let blockchain = new Chain();
 let blocks = [];

@@ -1,6 +1,8 @@
-const server = require('./server');
+const Server = require('./server');
 
 const start = async() => {
+    let server = new Server();
+
     try {
         await server.start();
     } catch (e) {
@@ -8,7 +10,6 @@ const start = async() => {
         process.exit(1);
     }
 
-    console.log(`Server running at ${server.info.uri}`);
 }
 
 start();
