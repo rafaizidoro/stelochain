@@ -6,7 +6,7 @@ After cloning this project, you will need to install the npm modules:
 ```
 
 ## Starting the API Server
-To start the API server, you will need to run the following command:
+To start the API server (Hapi), you will need to run the following command:
 ```
  node app.js
 ```
@@ -16,10 +16,25 @@ This will open the server on port 8000 and will synchronize the blockchain.
 The following endpoint are available:
 
 ### POST /block
-This endpoint allows the client to create a block.
+This endpoint allows the client to create a block. Is receives a JSON with the following schema:
+
+```
+ { "body" : "Satoshi is Alive" }
+```
+
 
 ### GET /block/0
-This endpoint allows the client to request a block.
+This endpoint allows the client to request a block. It returns a JSON schema with the block data:
+
+```
+{
+    "hash": "d4ba3a0c51ef0aea18be19d6c3f1349390488e8a92e721f63f45c8a964cfeaac",
+    "height": 0,
+    "body": "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks",
+    "time": "1535420182",
+    "previousBlockHash": ""
+}
+```
 
 ## Running tests
 The test were created using the Jest framework. To run the tests just execute:
