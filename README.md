@@ -11,7 +11,7 @@ To start the API server, you will need to run the following command:
  node app.js
 ```
 
-This will open the server on port 8000 and will synchronize the blockchain.
+This will open the server on port 8888 and will synchronize the blockchain.
 
 The following endpoint are available:
 
@@ -28,7 +28,7 @@ The test were created using the Jest framework. To run the tests just execute:
  npm tests
 ```
 
-**This code was developed with NodeJS v.8.9.4.**
+**This code was developed with NodeJS v.8.12**
 
 # File structure
 

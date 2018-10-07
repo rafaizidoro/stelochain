@@ -5,8 +5,7 @@ class Server {
   constructor(handler = null) {
     this.handler = handler || new Handler();
     this.hapi = Hapi.server({
-      port: 8000,
-      host: 'localhost'
+      port: 8888
     });
 
     this.setupRoutes();
@@ -23,6 +22,18 @@ class Server {
       method: 'POST',
       path: '/block',
       handler: this.handler.postBlock.bind(this.handler)
+    });
+
+    this.hapi.route({
+      method: 'POST',
+      path: '/requestValidation',
+      handler: this.handler.requestValidation.bind(this.handler)
+    });
+
+    this.hapi.route({
+      method: 'POST',
+      path: '/validate',
+      handler: this.handler.validate.bind(this.handler)
     });
   }
 
