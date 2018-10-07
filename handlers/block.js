@@ -31,6 +31,12 @@ class Handler {
       return res.response({ error: 'the fields "address" and "star" must be present' }).code(400);
     }
 
+    let star = req.payload.star;
+
+    if (star.ra === null || star.story === null || star.dec === null) {
+      return res.response({ error: 'the star fields "ra", "dec" and "story" must be present' }).code(400);
+    }
+
     let auth = new Auth(req.payload.address);
     await auth.get();
 
@@ -38,6 +44,7 @@ class Handler {
       return res.response({ error:  `the address #${auth.address} is not allowed to register a star` }).code(401);
     }
 
+    req.payload.star.storyDecoded = req.payload.star.story;
     let newBlock = await this.chain.addBlock({ body: req.payload });
 
     return newBlock;
