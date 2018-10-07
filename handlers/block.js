@@ -96,6 +96,19 @@ class Handler {
 
     return res.response(response).code(200);
   }
+
+  async stars(req, res) {
+    let search = req.params.search;
+    let blocks = [];
+
+    if (search === 'hash') {
+      blocks = await this.chain.getByHash(req.params.value);
+    } else {
+      blocks = await this.chain.getByAddress(req.params.value);
+    }
+
+    return res.response(blocks).code(200);
+  }
 }
 
 module.exports = Handler;

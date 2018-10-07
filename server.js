@@ -35,6 +35,12 @@ class Server {
       path: '/validate',
       handler: this.handler.validate.bind(this.handler)
     });
+
+    this.hapi.route({
+      method: 'GET',
+      path: '/stars/{search}:{value}',
+      handler: this.handler.stars.bind(this.handler)
+    });
   }
 
   start() {
