@@ -33,7 +33,7 @@ you will need to use the following endpoint:
 
 This endpoint will response with a message. With that message in hands, you will need to sign it using you preferred Bitcoin wallet (e.g Electrum) and do another request to the following endpoint:
 
-### POST /validate
+### POST /message-signature/validate
 
 ```
   {
