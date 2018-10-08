@@ -150,5 +150,5 @@ It returns a JSON with all the blocks from that hash:
 The test were created using the Jest framework. To run the tests just execute:
 
 ```
- docker run -it stelochain 'npm tests'
+ docker run -it stelochain './run-tests.sh'
 ```
