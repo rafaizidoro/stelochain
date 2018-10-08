@@ -21,6 +21,7 @@ class Handler {
       return res.response({ error: `cannot find block ${height}` }).code(404);
     }
 
+    block.decodeStory();
     return res.response(block).code(200);
   }
 
@@ -44,12 +45,12 @@ class Handler {
       return res.response({ error:  `the address #${auth.address} is not allowed to register a star` }).code(401);
     }
 
-    req.payload.star.storyDecoded = req.payload.star.story;
-    let newBlock = await this.chain.addBlock({ body: req.payload });
+    let newBlock = await this.chain.addBlock(new Block(req.payload));
 
     await auth.remove();
 
-    return newBlock;
+    newBlock.decodeStory();
+    return res.response(newBlock).code(200);
   }
 
   async requestValidation(req, res) {
@@ -111,11 +112,17 @@ class Handler {
   }
 
   async stars(req, res) {
+    console.log(`[GET] /stars/ - ${req.params.search}:${req.params.value}`);
+
     let search = req.params.search;
     let blocks = [];
 
     if (search === 'hash') {
       blocks = await this.chain.getByHash(req.params.value);
+
+      if (blocks == null) {
+        return res.response( { error: `the hash ${req.params.value} cannot be found`}).code(404);
+      }
     } else {
       blocks = await this.chain.getByAddress(req.params.value);
     }

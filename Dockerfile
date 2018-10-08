@@ -19,6 +19,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8888
+EXPOSE 8000
 
 CMD ["./start.sh"]

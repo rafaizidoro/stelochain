@@ -5,7 +5,7 @@ class Server {
   constructor(handler = null) {
     this.handler = handler || new Handler();
     this.hapi = Hapi.server({
-      port: 8888
+      port: 8000
     });
 
     this.setupRoutes();
@@ -32,7 +32,7 @@ class Server {
 
     this.hapi.route({
       method: 'POST',
-      path: '/validate',
+      path: '/message-signature/validate',
       handler: this.handler.validate.bind(this.handler)
     });
 
