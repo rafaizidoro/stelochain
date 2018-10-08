@@ -33,7 +33,7 @@ class Handler {
 
     let star = req.payload.star;
 
-    if (star.ra === null || star.story === null || star.dec === null) {
+    if (star.ra === undefined || star.story === undefined || star.dec === undefined) {
       return res.response({ error: 'the star fields "ra", "dec" and "story" must be present' }).code(400);
     }
 
@@ -47,11 +47,17 @@ class Handler {
     req.payload.star.storyDecoded = req.payload.star.story;
     let newBlock = await this.chain.addBlock({ body: req.payload });
 
+    await auth.remove();
+
     return newBlock;
   }
 
   async requestValidation(req, res) {
     console.log(`[POST] /requestValidation/ - ${JSON.stringify(req.payload)}`);
+
+    if (req.payload === null || req.payload.address === undefined) {
+      return res.response({ error: 'the field "address" must be present' }).code(400);
+    }
 
     let auth = new Auth(req.payload.address);
 
@@ -76,7 +82,7 @@ class Handler {
   async validate(req, res) {
     console.log(`[POST] /validate/ - ${JSON.stringify(req.payload)}`);
 
-    if ( req.payload.address === null || req.payload.signature === null ) {
+    if ( req.payload.address === null || req.payload.address === undefined || req.payload.signature === undefined) {
       return res.response({ error: 'the fields "address" and "signature" must be present' }).code(400);
     }
 

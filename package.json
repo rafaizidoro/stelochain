@@ -1,7 +1,7 @@
 {
-  "name": "simplechain",
+  "name": "stelochain",
   "version": "1.0.0",
-  "description": "simplechain is a blockchain proof of concept",
+  "description": "stelochain is a blockchain proof of concept",
   "main": "main.js",
   "scripts": {
     "test": "jest"
