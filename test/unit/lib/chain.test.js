@@ -22,7 +22,7 @@ it('locks chain when starting', async () => {
 
 it('generates genesis block', async (done) => {
   let chain = new Chain(path + 'chain2');
-  let genesis = {"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": 0, "ra": 0, "story": "5468652054696d65732030302f30302f303020546865204269672042616e67206a7573742068617070656e6564", "storyDecoded": "The Times 00/00/00 The Big Bang just happened"}}
+  let genesis = {"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": 0, "ra": 0, "story": "5468652054696d65732030302f30302f303020546865204269672042616e67206a7573742068617070656e6564" }}
 
   setTimeout(async() => {
     let genesisBlock = await chain.getBlock(0);
@@ -42,8 +42,8 @@ it('increments the block height', async (done) => {
       let height = chain.getBlockHeight();
       expect(height).toEqual(0);
 
-      let b1 = await chain.addBlock(new Block({"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": "+38° 47′ 1″", "ra": "18h 36m 56s", "storyDecoded": "Vega"} }));
-      let b2 = await chain.addBlock(new Block({"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": "-16° 42′ 58″", "ra": "6h 45m 9s", "storyDecoded": "Sirius"} }));
+      let b1 = await chain.addBlock(new Block({"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": "+38° 47′ 1″", "ra": "18h 36m 56s", "story": "Vega"} }));
+      let b2 = await chain.addBlock(new Block({"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": "-16° 42′ 58″", "ra": "6h 45m 9s", "story": "Sirius"} }));
 
       expect(chain.getBlockHeight()).toEqual(2);
 
@@ -57,7 +57,7 @@ it('returns the block info', async (done) => {
 
   setTimeout(async() => {
     let genesisBlock = await chain.getBlock(0);
-    let genesis = {"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": 0, "ra": 0, "story": "5468652054696d65732030302f30302f303020546865204269672042616e67206a7573742068617070656e6564", "storyDecoded": "The Times 00/00/00 The Big Bang just happened"}}
+    let genesis = {"address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": {"dec": 0, "ra": 0, "story": "5468652054696d65732030302f30302f303020546865204269672042616e67206a7573742068617070656e6564"}}
 
     expect(genesisBlock.height).toEqual(0);
     expect(genesisBlock.hash).not.toBeNull();
