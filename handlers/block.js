@@ -45,7 +45,13 @@ class Handler {
       return res.response({ error:  `the address #${auth.address} is not allowed to register a star` }).code(401);
     }
 
-    let newBlock = await this.chain.addBlock(new Block(req.payload));
+    let block = new Block(req.payload);
+
+    if (! block.isValid()) {
+      return res.response({ error: `invalid block`}).code(400);
+    }
+
+    let newBlock = await this.chain.addBlock(block);
 
     await auth.remove();
 
