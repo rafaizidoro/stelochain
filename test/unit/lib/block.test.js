@@ -63,14 +63,6 @@ test('is not valid - gt 250 chars', () => {
   expect(block.isValid()).toEqual(false);
 });
 
-test('is not valid - gt 250 chars', () => {
-  let words = 'cc cc bb cc aa aa bb cc cc cc bb cc bb bb cc cc cc aa cc aa bb aa aa aa aa aa aa bb cc aa aa bb aa bb bb cc bb cc bb aa bb bb aa cc aa aa aa aa cc cc cc aa bb aa aa cc aa cc cc bb aa cc cc cc aa bb aa bb cc cc cc aa cc bb bb bb cc bb cc bb cc aa cc aa cc aa aa aa aa aa aa bb aa cc bb bb cc aa aa bb cc aa cc aa bb bb aa aa bb aa cc aa bb aa bb cc cc bb bb bb cc aa cc bb aa bb bb cc bb bb aa cc cc aa bb aa bb bb aa cc cc cc bb bb bb cc bb aa bb aa aa aa aa bb cc bb cc cc bb cc aa cc aa bb bb cc aa bb aa cc bb cc cc aa aa bb cc cc cc cc bb bb cc aa bb bb cc aa aa cc cc bb aa bb cc bb aa aa bb bb aa aa cc aa bb bb bb cc cc cc bb cc bb cc cc cc aa bb aa bb cc cc bb cc aa aa bb bb aa cc cc bb bb cc cc cc aa cc cc cc aa bb bb cc cc cc bb cc aa bb bb cc aa cc bb bb aa cc aa cc';
-  let data = { "address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": { "dec": 0, "ra": 0, "story": words } }
-  let block = new Block(data);
-
-  expect(block.isValid()).toEqual(false);
-});
-
 test('is not valid - gt 500 bytes', () => {
   let words = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel malesuada sem. Aenean mattis faucibus eleifend. Curabitur non nisi ut dolor interdum feugiat sit amet sit amet lorem. Etiam hendrerit commodo tortor a maximus. Nulla pulvinar vitae velit lacinia rhoncus. Aliquam sed bibendum elit. Maecenas consequat mollis ultrices. Sed orci metus, cursus in lobortis a, posuere eget nulla. Etiam iaculis lorem et tincidunt faucibus. Quisque commodo pulvinar gravida. Sed consequat dui a iaculis laoreet. Sed euismod quam laoreet nunc mattis, quis suscipit ex posuere. Nulla posuere enim massa, vitae ornare lacus sagittis a. Duis sit amet aliquam mauris. Nam ultrices.'
   let data = { "address": "1JcnVEyQXVJQHBd2sFn3bt4XREixb4CxPF", "star": { "dec": 0, "ra": 0, "story": words } }
