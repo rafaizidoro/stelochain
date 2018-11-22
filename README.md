@@ -1,6 +1,6 @@
 # Stelochain - A Star Notary Blockchain
 
-This project is part of Udacity Blockchain Nanodegree program. It is a proof of concept of a simple blockchain.
+This project is a proof of concept of a simple blockchain.
 
 ## Prerequisites
 You'll need Docker to install dependencies and run the server.
